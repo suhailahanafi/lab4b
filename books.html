@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Information</title>
+</head>
+<body>
+
+    <h1>Book Information</h1>
+
+    <div id="bookDetails"></div>
+
+    <script>
+        async function loadBooks() {
+            const bookDetails = document.getElementById("bookDetails");
+
+            try {
+                const response = await fetch("books.json");
+
+                if (!response.ok) {
+                    throw new Error("Failed to load books.json");
+                }
+
+                const data = await response.json();
+
+                // Display first book title
+                const title = document.createElement("p");
+                title.textContent = data.books[0].title;
+                bookDetails.appendChild(title);
+
+                // Display second book author
+                const author = document.createElement("p");
+                author.textContent = data.books[1].author;
+                bookDetails.appendChild(author);
+
+                // Display genres for both books
+                data.books.forEach(book => {
+                    const genre = document.createElement("p");
+                    genre.textContent =
+                        book.title + " — " + book.genres.join(", ");
+
+                    bookDetails.appendChild(genre);
+                });
+
+            } catch (error) {
+                bookDetails.textContent =
+                    "Error: Unable to load book data.";
+            }
+        }
+
+        loadBooks();
+    </script>
+
+</body>
+</html>
